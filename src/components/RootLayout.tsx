@@ -62,7 +62,7 @@ function Header({
 
   return (
     <Container>
-      <div className="flex items-center justify-between">
+      <div className="flex  items-center justify-between">
         <Link
           href="/"
           aria-label="Home"
@@ -75,9 +75,9 @@ function Header({
             filled={logoHovered}
           />
         </Link>
-        <div className="flex items-center gap-x-10">
-          <Button href="/contact" invert={invert}>
-            Contact us
+        <div className="hidden md:flex items-center gap-x-8">
+          <Button href="/contact" invert={invert} >
+            Contact
           </Button>
           {/* THIS IS WHERE THE MENU TOGGLE HAPPENS */}
           {/* <button */}

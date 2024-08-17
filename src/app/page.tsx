@@ -1,6 +1,6 @@
 import { type Metadata } from 'next'
-import Image from 'next/image'
-import Link from 'next/link'
+// import Image from 'next/image'
+// import Link from 'next/link'
 
 import { ContactSection } from '@/components/ContactSection'
 import { Container } from '@/components/Container'
@@ -20,112 +20,105 @@ import { Testimonial } from '@/components/Testimonial'
 // import logoUnseal from '@/images/clients/unseal/logo-light.svg'
 import imageLaptop from '@/images/laptop.jpg'
 import logoMaxcess from '@/images/clients/maxcess-logo.png'
-import { type CaseStudy, type MDXEntry, loadCaseStudies } from '@/lib/mdx'
+// import { type CaseStudy, type MDXEntry, loadCaseStudies } from '@/lib/mdx'
 
-const clients: Array<[string, string]> = [
-  // ['Phobia', logoPhobiaLight],
-  // ['Family Fund', logoFamilyFund],
-  // ['Unseal', logoUnseal],
-  // ['Mail Smirk', logoMailSmirk],
-  // ['Home Work', logoHomeWork],
-  // ['Green Life', logoGreenLife],
-  // ['Bright Path', logoBrightPath],
-  // ['North Adventures', logoNorthAdventures],
-]
+// const clients: Array<[string, string]> = [
+//   // ['Phobia', logoPhobiaLight],
+// ]
 
 const ServicesDark = () => {
   return (
-    <div className="mt-24 rounded-4xl bg-neutral-950 pt-2">
+    <div className="mt-34 mt-24 rounded-4xl bg-neutral-950 pt-2">
       <Services invert={true}></Services>
     </div>
   )
 }
-function Clients() {
-  return (
-    <div className="mt-24 rounded-4xl bg-neutral-950 py-20 sm:mt-32 sm:py-32 lg:mt-56">
-      <Container>
-        <FadeIn className="flex items-center gap-x-8">
-          <h2 className="text-center font-display text-sm font-semibold tracking-wider text-white sm:text-left">
-            We’ve collaborated with many incredible companies
-          </h2>
-          <div className="h-px flex-auto bg-neutral-800" />
-        </FadeIn>
-        <FadeInStagger faster>
-          <ul
-            role="list"
-            className="mt-10 grid grid-cols-2 gap-x-8 gap-y-10 lg:grid-cols-4"
-          >
-            {clients.map(([client, logo]) => (
-              <li key={client}>
-                <FadeIn>
-                  <Image src={logo} alt={client} unoptimized />
-                </FadeIn>
-              </li>
-            ))}
-          </ul>
-        </FadeInStagger>
-      </Container>
-    </div>
-  )
-}
+// function Clients() {
+//   return (
+//     <div className="mt-24 rounded-4xl bg-neutral-950 py-20 sm:mt-32 sm:py-32 lg:mt-56">
+//       <Container>
+//         <FadeIn className="flex items-center gap-x-8">
+//           <h2 className="text-center font-display text-sm font-semibold tracking-wider text-white sm:text-left">
+//             We’ve collaborated with many incredible companies
+//           </h2>
+//           <div className="h-px flex-auto bg-neutral-800" />
+//         </FadeIn>
+//         <FadeInStagger faster>
+//           <ul
+//             role="list"
+//             className="mt-10 grid grid-cols-2 gap-x-8 gap-y-10 lg:grid-cols-4"
+//           >
+//             {clients.map(([client, logo]) => (
+//               <li key={client}>
+//                 <FadeIn>
+//                   <Image src={logo} alt={client} unoptimized />
+//                 </FadeIn>
+//               </li>
+//             ))}
+//           </ul>
+//         </FadeInStagger>
+//       </Container>
+//     </div>
+//   )
+// }
 
-function CaseStudies({
-  caseStudies,
-}: {
-  caseStudies: Array<MDXEntry<CaseStudy>>
-}) {
-  return (
-    <>
-      <SectionIntro
-        title="Automating engineering for a more efficient future"
-        className="mt-24 sm:mt-32 lg:mt-40"
-      >
-        <p>
-          At Aboni Tech, we believe in leveraging technology to enhance and streamline engineering processes. Our solutions connect departments and optimize workflows, driving innovation across the board.
-        </p>
-      </SectionIntro>
-      <Container className="mt-16">
-        <FadeInStagger className="grid grid-cols-1 gap-8 lg:grid-cols-3">
-          {caseStudies.map((caseStudy) => (
-            <FadeIn key={caseStudy.href} className="flex">
-              <article className="relative flex w-full flex-col rounded-3xl p-6 ring-1 ring-neutral-950/5 transition hover:bg-neutral-50 sm:p-8">
-                <h3>
-                  <Link href={caseStudy.href}>
-                    <span className="absolute inset-0 rounded-3xl" />
-                    <Image
-                      src={caseStudy.logo}
-                      alt={caseStudy.client}
-                      className="h-16 w-16"
-                      unoptimized
-                    />
-                  </Link>
-                </h3>
-                <p className="mt-6 flex gap-x-2 text-sm text-neutral-950">
-                  <time
-                    dateTime={caseStudy.date.split('-')[0]}
-                    className="font-semibold"
-                  >
-                    {caseStudy.date.split('-')[0]}
-                  </time>
-                  <span className="text-neutral-300" aria-hidden="true">
-                    /
-                  </span>
-                  <span>Case study</span>
-                </p>
-                <p className="mt-6 font-display text-2xl font-semibold text-neutral-950">
-                  {caseStudy.title}
-                </p>
-                <p className="mt-4 text-base text-neutral-600">
-                  {caseStudy.description}
-                </p>
-              </article>
-            </FadeIn>
-          ))}
-        </FadeInStagger>
-      </Container>
-    </>
-  )
-}
+// function CaseStudies({
+//   caseStudies,
+// }: {
+//   caseStudies: Array<MDXEntry<CaseStudy>>
+// }) {
+//   return (
+//     <>
+//       <SectionIntro
+//         title="Automating engineering for a more efficient future"
+//         className="mt-24 sm:mt-32 lg:mt-40"
+//       >
+//         <p>
+//           At Aboni Tech, we believe in leveraging technology to enhance and streamline engineering processes. Our solutions connect departments and optimize workflows, driving innovation across the board.
+//         </p>
+//       </SectionIntro>
+//       <Container className="mt-16">
+//         <FadeInStagger className="grid grid-cols-1 gap-8 lg:grid-cols-3">
+//           {caseStudies.map((caseStudy) => (
+//             <FadeIn key={caseStudy.href} className="flex">
+//               <article className="relative flex w-full flex-col rounded-3xl p-6 ring-1 ring-neutral-950/5 transition hover:bg-neutral-50 sm:p-8">
+//                 <h3>
+//                   <Link href={caseStudy.href}>
+//                     <span className="absolute inset-0 rounded-3xl" />
+//                     <Image
+//                       src={caseStudy.logo}
+//                       alt={caseStudy.client}
+//                       className="h-16 w-16"
+//                       unoptimized
+//                     />
+//                   </Link>
+//                 </h3>
+//                 <p className="mt-6 flex gap-x-2 text-sm text-neutral-950">
+//                   <time
+//                     dateTime={caseStudy.date.split('-')[0]}
+//                     className="font-semibold"
+//                   >
+//                     {caseStudy.date.split('-')[0]}
+//                   </time>
+//                   <span className="text-neutral-300" aria-hidden="true">
+//                     /
+//                   </span>
+//                   <span>Case study</span>
+//                 </p>
+//                 <p className="mt-6 font-display text-2xl font-semibold text-neutral-950">
+//                   {caseStudy.title}
+//                 </p>
+//                 <p className="mt-4 text-base text-neutral-600">
+//                   {caseStudy.description}
+//                 </p>
+//               </article>
+//             </FadeIn>
+//           ))}
+//         </FadeInStagger>
+//       </Container>
+//     </>
+//   )
+// }
 
 type ServicesProps = {
   invert?: boolean
@@ -137,7 +130,7 @@ const Services: React.FC<ServicesProps> = ({ invert }) => {
         <SectionIntro
           eyebrow="Services"
           title="We help streamline and automate your engineering processes."
-          className="sm:mt-20 lg:mt-20"
+          className="mt-10 lg:mt-20"
           invert={invert}
         >
           <p>
@@ -156,7 +149,7 @@ const Services: React.FC<ServicesProps> = ({ invert }) => {
               />
             </FadeIn>
           </div>
-          <List className="mt-16 lg:mt-0 lg:w-1/2 lg:min-w-[33rem] lg:pl-4 sm:pb-20 text-neutral-250">
+          <List className="mt-16 lg:mt-0 lg:w-1/2 lg:min-w-[33rem] lg:pl-4 pb-20 text-neutral-200">
             <ListItem title="Engineering Automation">
               We excel in automating engineering processes using tools like Autodesk Inventor and Solidworks, saving time and reducing errors.
             </ListItem>
