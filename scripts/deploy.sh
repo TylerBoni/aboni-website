@@ -23,8 +23,8 @@ fi
 
 # SSH into the remote server and restart the service using Docker Compose
 if ! ssh root@$1 << 'EOF'
-  cd /path/to/your/docker-compose/directory || exit 1
-  docker-compose up -d --no-deps --build app || exit 1
+  cd /root/aboni-website || exit 1
+  docker compose up -d --no-deps app || exit 1
 EOF
 then
   handle_error "Failed to restart the service using Docker Compose."
