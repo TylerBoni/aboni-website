@@ -31,6 +31,6 @@ jobs:
     - name: Build image
       run: ./scripts/deploy.sh build
     - name: Deploy image
-      run: ./scripts/deploy.sh deploy prod
+      run: apt install pv && ./scripts/deploy.sh deploy prod
     - name: Restart app
       run: ./scripts/deploy.sh restart prod
