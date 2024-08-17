@@ -25,14 +25,14 @@ function build_app {
 
 # Function to save and load Docker image on remote server
 function deploy_image {
-  if ! sudo docker save aboni/website | bzip2 | pv | ssh "$HOSTNAME" sudo docker load; then
+  if ! sudo docker save aboni/website | bzip2 | pv | ssh "$HOSTNAME" docker load; then
     handle_error "Failed to load Docker image on the remote server."
   fi
 }
 
 # Function to restart the service using Docker Compose on the remote server
 function restart_service {
-  if ! ssh "$HOSTNAME" sudo docker compose -f /root/docker/aboni-website/docker-compose.yml up -d --no-deps app || exit 1; then
+  if ! ssh "$HOSTNAME" docker compose -f /root/docker/aboni-website/docker-compose.yml up -d --no-deps app || exit 1; then
     handle_error "Failed to restart the service using Docker Compose."
   fi
 }
