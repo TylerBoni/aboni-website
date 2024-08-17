@@ -15,4 +15,6 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Build the Docker image
-      run: ./scripts/deploy.sh testconnect 161.35.235.64
+      env:
+        DOCKER_USER_PASS: ${{ secrets.DOCKER_USER_PASS }}
+      run: ./scripts/deploy.sh testconnect docker:$DOCKER_USER_PASS@161.35.235.64
