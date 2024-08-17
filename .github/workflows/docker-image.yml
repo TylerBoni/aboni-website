@@ -26,5 +26,11 @@ jobs:
         SSH_USER: ${{ secrets.SSH_USER }}
         SSH_KEY: ${{ secrets.SSH_KEY }}
         SSH_HOST: ${{ secrets.SSH_HOST }}
-    - name: Build the Docker image
+    - name: Test the ssh connection
       run: ./scripts/deploy.sh testconnect prod
+    - name: Build image
+      run: ./scripts/deploy.sh build
+    - name: Deploy image
+      run: ./scripts/deploy.sh deploy prod
+    - name: Restart app
+      run: ./scripts/deploy.sh restart prod
