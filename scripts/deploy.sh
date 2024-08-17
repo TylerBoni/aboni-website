@@ -11,7 +11,7 @@ function handle_error {
 
 # Function to test SSH connection
 function test_ssh {
-  if ! ssh -o BatchMode=yes -o ConnectTimeout=5 "root@$HOSTNAME" true; then
+  if ! ssh -o BatchMode=yes -o ConnectTimeout=5 "$HOSTNAME" true; then
     handle_error "SSH connection to $HOSTNAME failed."
   fi
 }
@@ -25,16 +25,15 @@ function build_app {
 
 # Function to save and load Docker image on remote server
 function deploy_image {
-  if ! sudo docker save aboni/website | bzip2 | pv | ssh "root@$HOSTNAME" docker load; then
+  if ! sudo docker save aboni/website | bzip2 | pv | ssh "$HOSTNAME" docker load; then
     handle_error "Failed to load Docker image on the remote server."
   fi
 }
 
 # Function to restart the service using Docker Compose on the remote server
 function restart_service {
-  if ! ssh "root@$HOSTNAME" <<EOF
-    cd /root/aboni-website || exit 1
-    docker compose up -d --no-deps app || exit 1
+  if ! ssh "$HOSTNAME" <<EOF
+    docker compose -f /root/docker/aboni-website/docker-compose.yml up -d --no-deps app || exit 1
 EOF
   then
     handle_error "Failed to restart the service using Docker Compose."
