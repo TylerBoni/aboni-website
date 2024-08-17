@@ -12,7 +12,7 @@ if ! ssh -o BatchMode=yes -o ConnectTimeout=5 $1 exit; then
 fi
 
 # Build the app
-if ! sudo docker-compose build app; then
+if ! sudo docker compose build app; then
   handle_error "Docker Compose build failed."
 fi
 
