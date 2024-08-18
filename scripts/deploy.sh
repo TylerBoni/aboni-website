@@ -32,7 +32,7 @@ function deploy_image {
 
 # Function to restart the service using Docker Compose on the remote server
 function restart_service {
-  if ! ssh "$HOSTNAME" docker compose -f /root/docker/aboni-website/docker-compose.yml up -d --no-deps app || exit 1; then
+  if ! ssh "$HOSTNAME" docker compose -f /root/docker/aboni-website/docker-compose.yml up -d --no-deps app; then
     handle_error "Failed to restart the service using Docker Compose."
   fi
 }
