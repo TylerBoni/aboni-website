@@ -50,7 +50,7 @@ jobs:
         SSH_USER: ${{ secrets.SSH_USER }}
 
     - name: Copy nginx config
-      run: git submodule update --init --recursive && scp -r ./nginx prod:/home/$SSH_USER/aboni-website/
+      run: git submodule update --init --recursive && scp -r ./nginx prod:/home/$SSH_USER/aboni-website
       env:
         SSH_USER: ${{ secrets.SSH_USER }}
 
