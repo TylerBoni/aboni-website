@@ -33,7 +33,7 @@ jobs:
       run: ssh prod && echo "SSH connection successful"
 
     - name: Build image
-      run: docker compose -f docker-compose.prod.yml build
+      run: docker compose -f docker-compose.yml build
 
     - name: Make project directory
       run: ssh prod "mkdir -p /home/$SSH_USER/aboni-website"
