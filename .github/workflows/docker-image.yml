@@ -39,7 +39,7 @@ jobs:
         SSH_USER: ${{ secrets.SSH_USER }}
 
     - name: Copy env file
-      run: echo $APP_ENV_FILE > .env.prod && scp .env.prod /home/$SSH_USER/aboni-website/
+      run: echo $APP_ENV_FILE > .env.prod && scp .env.prod /home/$SSH_USER/aboni-website/.env.local
       env:
         SSH_USER: ${{ secrets.SSH_USER }}
         APP_ENV_FILE: ${{ secrets.APP_ENV_PROD }}
