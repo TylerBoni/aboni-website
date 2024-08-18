@@ -61,6 +61,6 @@ jobs:
       run: docker save aboni/website | bzip2 | ssh prod docker load
 
     - name: Start the service
-      run: ssh prod "cd /home/$SSH_USER/aboni-website && docker-compose -f docker-compose.yml up -d"
+      run: ssh prod docker compose -f /home/$SSH_USER/aboni-website/docker-compose.yml up -d
       env:
         SSH_USER: ${{ secrets.SSH_USER }}
