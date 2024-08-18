@@ -32,11 +32,9 @@ jobs:
     - name: Test the ssh connection
       run: ssh prod && echo "SSH connection successful"
 
-    - name: Build image
-      run: docker compose -f docker-compose.yml build
 
     - name: Make project directory
-      run: ssh prod "mkdir -p /home/$SSH_USER/aboni-website"
+      run: ssh prod mkdir -p /home/$SSH_USER/aboni-website
 
     - name: Copy env file
       run: echo $APP_ENV_FILE > .env.prod && scp .env.prod /home/$SSH_USER/aboni-website/
@@ -46,6 +44,9 @@ jobs:
 
     - name: Copy nginx config
       run: scp ./nginx /home/$SSH_USER/aboni-website/nginx
+
+    - name: Build image
+      run: docker compose -f docker-compose.yml build
 
     - name: Deploy image
       run: docker save aboni/website | bzip2 | ssh prod docker load
