@@ -2,9 +2,11 @@ name: Docker Image CI V2
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "main" ]
+    paths: [ "src/**", "docker-compose.yml", "Dockerfile", "nginx/templates/**" ]
   pull_request:
-    branches: [ "master" ]
+    branches: [ "main" ]
+    paths: [ "src/**", "docker-compose.yml", "Dockerfile", "nginx/templates/**" ]
 jobs:
   build:
     runs-on: ubuntu-latest
