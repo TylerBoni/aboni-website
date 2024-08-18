@@ -16,8 +16,15 @@ This application has nginx and certbot bundled into it. Github actions will do m
 
 After the first deployment, you will need to edit the ./nginx/templates/default.template.conf to remove the 443 configurations. Now would be a good time to double check the DNS records. Restart the nginx container on the server and run:
 ```
+echo "This is only a test, run without --dry-run to actually generate the cert"
+docker compose run --rm  certbot certonly --webroot --webroot-path /var/www/certbot/ -d --dry-run abonitech.com
+```
+
+And if that works, then run:
+```
 docker compose run --rm  certbot certonly --webroot --webroot-path /var/www/certbot/ -d abonitech.com
 ```
+
 This will issue a new certificate. This certificate is now stored in a docker volume, and we don't want to accidentally delete it. It will expire in 3 months, so we should remember to renew it with:
 ```
 docker compose run --rm certbot renew
