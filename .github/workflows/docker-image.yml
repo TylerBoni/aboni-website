@@ -26,11 +26,8 @@ jobs:
         SSH_USER: ${{ secrets.SSH_USER }}
         SSH_KEY: ${{ secrets.SSH_KEY }}
         SSH_HOST: ${{ secrets.SSH_HOST }}
-        APP_ENV_FILE: ${{ secrets.APP_ENV_FILE }}
     - name: Test the ssh connection
       run: ./scripts/deploy.sh testconnect prod
-    - name: Create env
-      run: echo $APP_ENV_FILE > .env.local
     - name: Build image
       run: ./scripts/deploy.sh build
     - name: Deploy image
