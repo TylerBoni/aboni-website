@@ -18,6 +18,10 @@ function test_ssh {
 
 # Function to build the app
 function build_app {
+  if ! cat .env.local; then
+    echo "No .env.local file found. Creating one."
+    touch .env.local
+  fi
   if ! sudo docker compose build app; then
     handle_error "Docker Compose build failed."
   fi
