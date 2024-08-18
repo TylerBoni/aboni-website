@@ -35,15 +35,24 @@ jobs:
 
     - name: Make project directory
       run: ssh prod mkdir -p /home/$SSH_USER/aboni-website
+      env:
+        SSH_USER: ${{ secrets.SSH_USER }}
 
     - name: Copy env file
       run: echo $APP_ENV_FILE > .env.prod && scp .env.prod /home/$SSH_USER/aboni-website/
+      env:
+        SSH_USER: ${{ secrets.SSH_USER }}
+        APP_ENV_FILE: ${{ secrets.APP_ENV_PROD }}
 
     - name: Copy docker-compose file
       run: scp docker-compose.yml /home/$SSH_USER/aboni-website/docker-compose.yml
+      env:
+        SSH_USER: ${{ secrets.SSH_USER }}
 
     - name: Copy nginx config
       run: scp ./nginx /home/$SSH_USER/aboni-website/nginx
+      env:
+        SSH_USER: ${{ secrets.SSH_USER }}
 
     - name: Build image
       run: docker compose -f docker-compose.yml build
@@ -53,3 +62,5 @@ jobs:
 
     - name: Start the service
       run: ssh prod "cd /home/$SSH_USER/aboni-website && docker-compose -f docker-compose.yml up -d"
+      env:
+        SSH_USER: ${{ secrets.SSH_USER }}
