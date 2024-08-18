@@ -32,5 +32,3 @@ jobs:
       run: ./scripts/deploy.sh build
     - name: Deploy image
       run: sudo apt install pv && ./scripts/deploy.sh deploy prod
-    - name: Restart app
-      run: ./scripts/deploy.sh restart prod
