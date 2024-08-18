@@ -24,4 +24,4 @@ services:
     volumes:
       - ./certbot/www:/var/www/certbot:rw
       - ./certbot/conf:/etc/letsencrypt
-    restart: unless-stopped
+    restart: no
