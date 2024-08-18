@@ -45,12 +45,12 @@ jobs:
         APP_ENV_FILE: ${{ secrets.APP_ENV_PROD }}
 
     - name: Copy docker-compose file
-      run: scp docker-compose.yml /home/$SSH_USER/aboni-website/docker-compose.yml
+      run: scp docker-compose.yml prod:/home/$SSH_USER/aboni-website/docker-compose.yml
       env:
         SSH_USER: ${{ secrets.SSH_USER }}
 
     - name: Copy nginx config
-      run: scp ./nginx /home/$SSH_USER/aboni-website/nginx
+      run: scp -r ./nginx prod:/home/$SSH_USER/aboni-website/nginx
       env:
         SSH_USER: ${{ secrets.SSH_USER }}
 
