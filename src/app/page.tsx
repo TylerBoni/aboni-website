@@ -149,7 +149,7 @@ const Services: React.FC<ServicesProps> = ({ invert }) => {
               />
             </FadeIn>
           </div>
-          <List className="mt-16 lg:mt-0 lg:w-1/2 lg:min-w-[33rem] lg:pl-4 pb-20 text-neutral-200">
+          <List className="mt-16 lg:mt-0 lg:w-1/2 lg:min-w-[33rem] lg:pl-4 pb-20 text-white">
             <ListItem title="Engineering Automation">
               We excel in automating engineering processes using tools like Autodesk Inventor and Solidworks, saving time and reducing errors.
             </ListItem>
