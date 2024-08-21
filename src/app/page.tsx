@@ -127,16 +127,16 @@ const Services: React.FC<ServicesProps> = ({ invert }) => {
   return (
     <>
       <FadeIn>
-        <SectionIntro
-          eyebrow="Services"
-          title="We help streamline and automate your engineering processes."
-          className="mt-10 lg:mt-20"
-          invert={invert}
-        >
-          <p>
-            At Aboni Tech, we specialize in connecting departments through automation, utilizing industry-standard software like Autodesk Inventor and Solidworks to ensure seamless integration and improved efficiency.
-          </p>
-        </SectionIntro>
+        {/* <SectionIntro */}
+        {/*   eyebrow="Services" */}
+        {/*   title="We help streamline and automate your engineering processes." */}
+        {/*   className="mt-10 lg:mt-20" */}
+        {/*   invert={invert} */}
+        {/* > */}
+        {/*   <p> */}
+        {/*     At Aboni Tech, we specialize in connecting departments through automation, utilizing industry-standard software like Autodesk Inventor and Solidworks to ensure seamless integration and improved efficiency. */}
+        {/*   </p> */}
+        {/* </SectionIntro> */}
       </FadeIn>
       <Container className="sm:mt-0 lg:mt-10">
         <div className="lg:flex lg:items-center lg:justify-end">
@@ -182,10 +182,10 @@ export default async function Home() {
       <Container className="mt-28 sm:mt-34 md:mt-54">
         <FadeIn className="max-w-3xl">
           <h1 className="font-display text-5xl font-medium tracking-tight text-neutral-950 [text-wrap:balance] sm:text-7xl">
-            Leading the way in engineering automation and process optimization.
+            automate your engineering and optimizes processes
           </h1>
           <p className="mt-6 text-xl text-neutral-600">
-            Aboni Tech is dedicated to transforming engineering through automation. Our solutions bridge the gap between departments, driving efficiency and innovation.
+            At Aboni Tech, we specialize in connecting departments through automation, utilizing industry-standard software like Autodesk Inventor and Solidworks to ensure seamless integration and improved efficiency.
           </p>
         </FadeIn>
       </Container>
