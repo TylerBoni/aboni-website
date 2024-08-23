@@ -17,19 +17,36 @@ function ArrowIcon(props: React.ComponentPropsWithoutRef<'svg'>) {
 
 const NewsletterForm = () => {
   const [email, setEmail] = useState('')
+  const [submitted, setSubmitted] = useState(false)
+  const [error, setError] = useState('')
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value)
+    setError('')
+    setSubmitted(false)
   }
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    const res = fetch('/api/form', {
+
+    if (email === '' || !email.includes('@') || !email.includes('.')) {
+      setError('Please enter a valid email address.')
+      return
+    }
+    fetch('/api/form', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: "{\"email\":\"" + email + "\",\"message\":\"NEWSLETTER SIGNUP\"}"
+    }).then((res) => {
+      if (res.ok) {
+        setSubmitted(true)
+        setError('')
+      } else {
+        console.error('Form submission failed')
+        setError('Form submission failed, please try again later.')
+      }
     })
   }
   return (
@@ -51,15 +68,20 @@ const NewsletterForm = () => {
           onChange={handleChange}
         />
         <div className="absolute inset-y-1 right-1 flex justify-end">
-          <button
-            type="submit"
-            aria-label="Submit"
-            className="flex aspect-square h-full items-center justify-center rounded-xl bg-neutral-950 text-white transition hover:bg-neutral-800"
-          >
-            <ArrowIcon className="w-4" />
-          </button>
+          {submitted && error == '' ? (
+            <span className="flex items-center pr-2 text-neutral-500 text-sm">Submitted!</span>
+          ) : (
+            <button
+              type="submit"
+              aria-label="Submit"
+              className="flex aspect-square h-full items-center justify-center rounded-xl bg-neutral-950 text-white transition hover:bg-neutral-800"
+            >
+              <ArrowIcon className="w-4" />
+            </button>
+          )}
         </div>
       </div>
+      {error && <p className="ml-4 mt-2 text-sm text-red-500">{error}</p>}
     </form>
   )
 }

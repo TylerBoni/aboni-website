@@ -23,11 +23,19 @@ const ContactForm = () => {
     budget: '',
   });
 
+  const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState('')
+
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-
     e.preventDefault();
-    const res = await fetch('/api/form', {
+
+    if (data.name === '' || (data.email === '' && data.phone === '') || data.message === '' || data.budget === '') {
+      setError('Please fill out name, email or phone, message, and budget.');
+      return
+    }
+
+    const res = await fetch('/api/form1', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -37,8 +45,11 @@ const ContactForm = () => {
 
     if (res.ok) {
       console.log('Form submitted successfully');
+      setError('');
+      setSubmitted(true);
     } else {
       console.error('Form submission failed');
+      setError('Form submission failed, please try again later.');
     }
   };
 
@@ -85,9 +96,9 @@ const ContactForm = () => {
             </fieldset>
           </div>
         </div>
-        <Button type="submit" className="mt-10">
-          Let’s work together
-        </Button>
+        {submitted && <p className="mt-6 text-neutral-950">Thank you for your submission!</p>}
+        {!submitted && <Button type="submit" className="mt-10">Let’s work together</Button>}
+        {error != '' && <p className="mt-6 text-red-600">{error}</p>}
       </form>
     </FadeIn >
   )
