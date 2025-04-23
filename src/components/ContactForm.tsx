@@ -1,5 +1,4 @@
-"use client";
-
+'use client'
 
 import { useId, useState } from 'react'
 import { type Metadata } from 'next'
@@ -21,54 +20,63 @@ const ContactForm = () => {
     phone: '',
     message: '',
     budget: '',
-  });
+  })
 
-  const [submitted, setSubmitted] = useState(false);
+  const [submitted, setSubmitted] = useState(false)
   const [error, setError] = useState('')
 
-
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+    e.preventDefault()
 
-    if (data.name === '' || (data.email === '' && data.phone === '') || data.message === '' || data.budget === '') {
-      setError('Please fill out name, email or phone, message, and budget.');
+    if (
+      data.name === '' ||
+      (data.email === '' && data.phone === '') ||
+      data.message === '' ||
+      data.budget === ''
+    ) {
+      setError('Please fill out name, email or phone, message, and budget.')
       return
     }
 
-    const res = await fetch('/api/form1', {
+    const res = await fetch('/api/form', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(data),
-    });
+    })
 
     if (res.ok) {
-      console.log('Form submitted successfully');
-      setError('');
-      setSubmitted(true);
+      console.log('Form submitted successfully')
+      setError('')
+      setSubmitted(true)
     } else {
-      console.error('Form submission failed');
-      setError('Form submission failed, please try again later.');
+      console.error('Form submission failed')
+      setError('Form submission failed, please try again later.')
     }
-  };
+  }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
+    const { name, value } = e.target
     setData((prev) => ({
       ...prev,
       [name]: value,
-    }));
+    }))
   }
 
   return (
     <FadeIn className="lg:order-last">
-      <form onSubmit={handleSubmit} >
+      <form onSubmit={handleSubmit}>
         <h2 className="font-display text-base font-semibold text-neutral-950">
           Work inquiries
         </h2>
         <div className="isolate mt-6 -space-y-px rounded-2xl bg-white/50">
-          <TextInput label="Name" name="name" autoComplete="name" onChange={handleChange} />
+          <TextInput
+            label="Name"
+            name="name"
+            autoComplete="name"
+            onChange={handleChange}
+          />
           <TextInput
             label="Email"
             type="email"
@@ -82,25 +90,59 @@ const ContactForm = () => {
             autoComplete="organization"
             onChange={handleChange}
           />
-          <TextInput label="Phone" type="tel" name="phone" autoComplete="tel" onChange={handleChange} />
+          <TextInput
+            label="Phone"
+            type="tel"
+            name="phone"
+            autoComplete="tel"
+            onChange={handleChange}
+          />
           <TextInput label="Message" name="message" onChange={handleChange} />
           <div className="border border-neutral-300 px-6 py-8 first:rounded-t-2xl last:rounded-b-2xl">
             <fieldset>
               <legend className="text-base/6 text-neutral-500">Budget</legend>
               <div className="mt-6 grid grid-cols-1 gap-8 sm:grid-cols-2">
-                <RadioInput label="$25K – $50K" name="budget" value="25k-50k" onChange={handleChange} />
-                <RadioInput label="$50K – $100K" name="budget" value="50k-100k" onChange={handleChange} />
-                <RadioInput label="$100K – $150K" name="budget" value="100k-150k" onChange={handleChange} />
-                <RadioInput label="More than $150K" name="budget" value="150k+" onChange={handleChange} />
+                <RadioInput
+                  label="$25K – $50K"
+                  name="budget"
+                  value="25k-50k"
+                  onChange={handleChange}
+                />
+                <RadioInput
+                  label="$50K – $100K"
+                  name="budget"
+                  value="50k-100k"
+                  onChange={handleChange}
+                />
+                <RadioInput
+                  label="$100K – $150K"
+                  name="budget"
+                  value="100k-150k"
+                  onChange={handleChange}
+                />
+                <RadioInput
+                  label="More than $150K"
+                  name="budget"
+                  value="150k+"
+                  onChange={handleChange}
+                />
               </div>
             </fieldset>
           </div>
         </div>
-        {submitted && <p className="mt-6 text-neutral-950">Thank you for your submission!</p>}
-        {!submitted && <Button type="submit" className="mt-10">Let’s work together</Button>}
+        {submitted && (
+          <p className="mt-6 text-neutral-950">
+            Thank you for your submission!
+          </p>
+        )}
+        {!submitted && (
+          <Button type="submit" className="mt-10">
+            Let’s work together
+          </Button>
+        )}
         {error != '' && <p className="mt-6 text-red-600">{error}</p>}
       </form>
-    </FadeIn >
+    </FadeIn>
   )
 }
 
