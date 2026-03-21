@@ -59,6 +59,14 @@ function ContactDetails() {
 export const metadata: Metadata = {
   title: 'Contact Us',
   description: 'Let’s work together. We can’t wait to hear from you.',
+  alternates: {
+    canonical: '/contact',
+  },
+  openGraph: {
+    title: 'Contact Us',
+    description: 'Let’s work together. We can’t wait to hear from you.',
+    url: '/contact',
+  },
 }
 
 export default function Contact() {

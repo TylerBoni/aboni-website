@@ -170,8 +170,12 @@ const Services: React.FC<ServicesProps> = ({ invert }) => {
 }
 
 export const metadata: Metadata = {
+  title: 'Home',
   description:
     'Aboni Tech is a software development company focusing on automating engineering processes using Autodesk Inventor, Solidworks, and other common apps.',
+  alternates: {
+    canonical: '/',
+  },
 }
 
 export default async function Home() {

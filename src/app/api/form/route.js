@@ -6,11 +6,11 @@ export async function POST(request) {
     const { name, email, company, phone, message, budget } =
       await request.json()
 
-    const webhookUrl = process.env.MATTERMOST_CONTACT_WEBHOOK_URL
+    const webhookUrl = process.env.DISCORD_CONTACT_WEBHOOK_URL
 
     if (!webhookUrl) {
       console.error(
-        'MATTERMOST_CONTACT_WEBHOOK_URL environment variable is not set.',
+        'DISCORD_CONTACT_WEBHOOK_URL environment variable is not set.',
       )
       return NextResponse.json(
         { message: 'Webhook URL not configured' },
@@ -19,12 +19,14 @@ export async function POST(request) {
     }
 
     const payload = {
-      text: `New form submission from ${name}:
-      Email: ${email}
-      Company: ${company}
-      Phone: ${phone}
-      Message: ${message}
-      Budget: ${budget}`,
+      content: `**New contact form submission**
+**Name:** ${name}
+**Email:** ${email}
+**Company:** ${company || '—'}
+**Phone:** ${phone || '—'}
+**Budget:** ${budget || '—'}
+**Message:**
+${message || '—'}`,
     }
 
     const response = await fetch(webhookUrl, {
@@ -37,15 +39,17 @@ export async function POST(request) {
 
     if (response.ok) {
       return NextResponse.json(
-        { message: 'Form submission sent to Mattermost' },
+        { message: 'Form submission sent' },
         { status: 200 },
       )
-    } else {
-      return NextResponse.json(
-        { message: 'Failed to send to Mattermost' },
-        { status: 500 },
-      )
     }
+
+    const errText = await response.text().catch(() => '')
+    console.error('Discord webhook error:', response.status, errText)
+    return NextResponse.json(
+      { message: 'Failed to send notification' },
+      { status: 500 },
+    )
   } catch (error) {
     console.error(error)
     return NextResponse.json(
