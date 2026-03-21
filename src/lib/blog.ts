@@ -10,12 +10,16 @@ export interface BlogPost {
   modifiedAt: string
   excerpt: string
   content: string
+  /** `html` = WordPress-style body; otherwise GitHub-flavored markdown */
+  contentFormat: 'markdown' | 'html'
 }
 
 interface BlogFrontmatter {
   title?: string
   date?: string
   excerpt?: string
+  /** `html` when body is raw HTML (e.g. from WordPress REST) */
+  format?: string
 }
 
 function parseFrontmatter(rawContent: string): {
@@ -47,7 +51,7 @@ function parseFrontmatter(rawContent: string): {
       .trim()
       .replace(/^['"]|['"]$/g, '')
 
-    if (key === 'title' || key === 'date' || key === 'excerpt') {
+    if (key === 'title' || key === 'date' || key === 'excerpt' || key === 'format') {
       frontmatter[key] = value
     }
   }
@@ -66,7 +70,21 @@ function getTitle(content: string, fallback: string) {
   return fallback
 }
 
-function getExcerpt(content: string) {
+function stripHtmlTags(html: string) {
+  return html
+    .replace(/<script[\s\S]*?>[\s\S]*?<\/script>/gi, ' ')
+    .replace(/<style[\s\S]*?>[\s\S]*?<\/style>/gi, ' ')
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+}
+
+function getExcerpt(content: string, contentFormat: 'markdown' | 'html') {
+  if (contentFormat === 'html') {
+    const text = stripHtmlTags(content)
+    return text ? (text.length > 280 ? `${text.slice(0, 277)}…` : text) : ''
+  }
+
   for (const line of content.split('\n')) {
     const trimmedLine = line.trim()
     if (!trimmedLine || trimmedLine.startsWith('#')) {
@@ -125,14 +143,17 @@ export async function getBlogPosts(): Promise<BlogPost[]> {
 
       const { frontmatter, content } = parseFrontmatter(rawContent)
       const fallbackTitle = getFallbackTitleFromSlug(slug)
+      const contentFormat: BlogPost['contentFormat'] =
+        frontmatter.format?.toLowerCase() === 'html' ? 'html' : 'markdown'
 
       return {
         slug,
         title: frontmatter.title || getTitle(content, fallbackTitle),
-        excerpt: frontmatter.excerpt || getExcerpt(content),
+        excerpt: frontmatter.excerpt || getExcerpt(content, contentFormat),
         date: getDate(frontmatter.date, stats.mtime),
         modifiedAt: stats.mtime.toISOString(),
         content,
+        contentFormat,
       }
     }),
   )

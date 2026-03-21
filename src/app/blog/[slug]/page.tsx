@@ -1,8 +1,6 @@
 import { type Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import ReactMarkdown from 'react-markdown'
-import remarkGfm from 'remark-gfm'
-
+import { BlogPostBody } from '@/components/BlogPostBody'
 import { Container } from '@/components/Container'
 import { formatDate } from '@/lib/formatDate'
 import { getBlogPostBySlug, getBlogPosts } from '@/lib/blog'
@@ -63,9 +61,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
       </header>
 
       <div className="mx-auto mt-16 max-w-3xl">
-        <div className="typography">
-          <ReactMarkdown remarkPlugins={[remarkGfm]}>{post.content}</ReactMarkdown>
-        </div>
+        <BlogPostBody content={post.content} contentFormat={post.contentFormat} />
       </div>
     </Container>
   )
