@@ -1,16 +1,14 @@
 ---
 title: '5 Common CAD Automation Mistakes (and How to Avoid Them)'
 date: 2026-03-21
-excerpt: ''
+excerpt: 'Automation is a powerful tool for engineering teams, but it’s not a magic wand. Avoid these five common pitfalls to ensure your CAD automation project actually saves time and money'
 format: html
 wp_id: 1774075233817
 status: publish
 categories: [1]
 ---
 <hr>
-<h2>title: 5 Common CAD Automation Mistakes (and How to Avoid Them)
-date: 2026-03-20
-excerpt: Automation is a powerful tool for engineering teams, but it’s not a magic wand. Avoid these five common pitfalls to ensure your CAD automation project actually saves time and money.</h2>
+<h2>Automation is a powerful tool for engineering teams, but it’s not a magic wand. Avoid these five common pitfalls to ensure your CAD automation project actually saves time and money.</h2>
 
 <p></p>
 <p>We’ve all been there. You spend weeks developing a script or a custom tool meant to &quot;save hours of work,&quot; only to find that it breaks the moment a user changes a single parameter. Or worse, it works perfectly but creates a mountain of data that your ERP system can’t read.</p>

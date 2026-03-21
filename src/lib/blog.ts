@@ -12,6 +12,9 @@ export interface BlogPost {
   content: string
   /** `html` = WordPress-style body; otherwise GitHub-flavored markdown */
   contentFormat: 'markdown' | 'html'
+  status: 'publish' | 'draft'
+  wpId: number | null
+  categories: number[]
 }
 
 interface BlogFrontmatter {
@@ -20,6 +23,9 @@ interface BlogFrontmatter {
   excerpt?: string
   /** `html` when body is raw HTML (e.g. from WordPress REST) */
   format?: string
+  status?: string
+  wp_id?: string
+  categories?: string
 }
 
 function parseFrontmatter(rawContent: string): {
@@ -51,7 +57,15 @@ function parseFrontmatter(rawContent: string): {
       .trim()
       .replace(/^['"]|['"]$/g, '')
 
-    if (key === 'title' || key === 'date' || key === 'excerpt' || key === 'format') {
+    if (
+      key === 'title' ||
+      key === 'date' ||
+      key === 'excerpt' ||
+      key === 'format' ||
+      key === 'status' ||
+      key === 'wp_id' ||
+      key === 'categories'
+    ) {
       frontmatter[key] = value
     }
   }
@@ -118,6 +132,38 @@ function getDate(dateFromFrontmatter: string | undefined, fallbackDate: Date) {
   return parsedDate.toISOString().slice(0, 10)
 }
 
+function getStatus(statusFromFrontmatter: string | undefined): BlogPost['status'] {
+  if (!statusFromFrontmatter) {
+    return 'publish'
+  }
+  return statusFromFrontmatter.toLowerCase() === 'draft' ? 'draft' : 'publish'
+}
+
+function parseWpId(wpIdFromFrontmatter: string | undefined) {
+  if (!wpIdFromFrontmatter) {
+    return null
+  }
+  const parsed = Number(wpIdFromFrontmatter)
+  return Number.isInteger(parsed) ? parsed : null
+}
+
+function parseCategoryIds(categoriesFromFrontmatter: string | undefined) {
+  if (!categoriesFromFrontmatter) {
+    return []
+  }
+
+  const normalized = categoriesFromFrontmatter.trim()
+  if (!normalized.startsWith('[') || !normalized.endsWith(']')) {
+    return []
+  }
+
+  return normalized
+    .slice(1, -1)
+    .split(',')
+    .map((value) => Number(value.trim()))
+    .filter((value): value is number => Number.isInteger(value))
+}
+
 export async function getBlogPosts(): Promise<BlogPost[]> {
   let fileNames: string[] = []
 
@@ -145,6 +191,7 @@ export async function getBlogPosts(): Promise<BlogPost[]> {
       const fallbackTitle = getFallbackTitleFromSlug(slug)
       const contentFormat: BlogPost['contentFormat'] =
         frontmatter.format?.toLowerCase() === 'html' ? 'html' : 'markdown'
+      const status = getStatus(frontmatter.status)
 
       return {
         slug,
@@ -154,11 +201,16 @@ export async function getBlogPosts(): Promise<BlogPost[]> {
         modifiedAt: stats.mtime.toISOString(),
         content,
         contentFormat,
+        status,
+        wpId: parseWpId(frontmatter.wp_id),
+        categories: parseCategoryIds(frontmatter.categories),
       }
     }),
   )
 
-  return posts.sort((postA, postB) => postB.date.localeCompare(postA.date))
+  return posts
+    .filter((post) => post.status === 'publish')
+    .sort((postA, postB) => postB.date.localeCompare(postA.date))
 }
 
 export async function getBlogPostBySlug(slug: string) {
