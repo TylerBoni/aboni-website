@@ -11,22 +11,63 @@ function getBearerToken(request: Request) {
 }
 
 function getBasicPassword(request: Request) {
+  const credentials = getBasicCredentials(request)
+  return credentials?.password || ''
+}
+
+function getBasicCredentials(request: Request) {
   const authHeader = request.headers.get('authorization') || ''
   const match = authHeader.match(/^Basic\s+(.+)$/i)
   if (!match) {
-    return ''
+    return null
   }
 
   try {
     const decoded = Buffer.from(match[1], 'base64').toString('utf8')
     const separatorIndex = decoded.indexOf(':')
     if (separatorIndex === -1) {
-      return ''
+      return null
     }
-    return decoded.slice(separatorIndex + 1)
+    return {
+      username: decoded.slice(0, separatorIndex),
+      password: decoded.slice(separatorIndex + 1),
+    }
   } catch {
-    return ''
+    return null
   }
+}
+
+function expectedWpUsername() {
+  return (
+    process.env.WP_API_USERNAME ||
+    process.env.WP_ADMIN_USERNAME ||
+    process.env.WP_ADMIN_EMAIL ||
+    ''
+  )
+}
+
+export function getCurrentWpUser() {
+  const username = expectedWpUsername() || 'wp-api-user'
+  const slug = username
+    .toLowerCase()
+    .replace(/[^a-z0-9._-]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+  return {
+    id: 1,
+    name: username,
+    slug: slug || 'wp-api-user',
+  }
+}
+
+export function wpUnauthorizedResponse() {
+  return NextResponse.json(
+    {
+      code: 'rest_not_logged_in',
+      message: 'You are not currently logged in.',
+      data: { status: 401 },
+    },
+    { status: 401 },
+  )
 }
 
 export function authorizeWpWriteRequest(request: Request) {
@@ -42,13 +83,19 @@ export function authorizeWpWriteRequest(request: Request) {
   const normalizedExpected = normalizeToken(configuredToken)
   const bearerToken = normalizeToken(getBearerToken(request))
   const basicPassword = normalizeToken(getBasicPassword(request))
+  const basicCredentials = getBasicCredentials(request)
+  const configuredUsername = expectedWpUsername()
+  const usernameValid =
+    !configuredUsername ||
+    !basicCredentials ||
+    basicCredentials.username.toLowerCase() === configuredUsername.toLowerCase()
 
   if (
-    bearerToken === normalizedExpected ||
-    basicPassword === normalizedExpected
+    usernameValid &&
+    (bearerToken === normalizedExpected || basicPassword === normalizedExpected)
   ) {
     return null
   }
 
-  return NextResponse.json({ message: 'Unauthorized' }, { status: 401 })
+  return wpUnauthorizedResponse()
 }
