@@ -76,6 +76,17 @@ function Header({
           />
         </Link>
         <div className="hidden md:flex items-center gap-x-8">
+          <Link
+            href="/blog"
+            className={clsx(
+              'text-sm font-semibold transition',
+              invert
+                ? 'text-neutral-400 hover:text-white'
+                : 'text-neutral-600 hover:text-neutral-950',
+            )}
+          >
+            Blog
+          </Link>
           <Button href="/contact" invert={invert} >
             Contact
           </Button>
@@ -139,7 +150,7 @@ function Navigation() {
   return (
     <nav className="mt-px font-display text-5xl font-medium tracking-tight text-white">
       <NavigationRow>
-        <NavigationItem href="/">Home</NavigationItem>
+        <NavigationItem href="/blog">Blog</NavigationItem>
         <NavigationItem href="/contact">Contact</NavigationItem>
       </NavigationRow>
     </nav>
