@@ -3,28 +3,7 @@ import { Buffer } from 'node:buffer'
 import { NextResponse } from 'next/server'
 
 import { getGitHubConfig, getRepoFile, upsertRepoFile } from '@/lib/github-content-api'
-
-function getBearerToken(request: Request) {
-  const authHeader = request.headers.get('authorization') || ''
-  const match = authHeader.match(/^Bearer\s+(.+)$/i)
-  return match?.[1]?.trim() || ''
-}
-
-function authorize(request: Request) {
-  const apiToken = process.env.WP_API_TOKEN
-  if (!apiToken) {
-    return NextResponse.json(
-      { message: 'WP_API_TOKEN is not configured' },
-      { status: 500 },
-    )
-  }
-
-  if (getBearerToken(request) !== apiToken) {
-    return NextResponse.json({ message: 'Unauthorized' }, { status: 401 })
-  }
-
-  return null
-}
+import { authorizeWpWriteRequest } from '@/lib/wp-api-auth'
 
 function sanitizeFilename(fileName: string) {
   return fileName
@@ -42,7 +21,7 @@ function parseFilenameFromContentDisposition(headerValue: string | null) {
 }
 
 export async function POST(request: Request) {
-  const authResponse = authorize(request)
+  const authResponse = authorizeWpWriteRequest(request)
   if (authResponse) {
     return authResponse
   }
